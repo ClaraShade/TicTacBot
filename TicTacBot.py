@@ -52,177 +52,68 @@ class Board:
         print(columns)
 
 
-
 ##here new methods
-    def rows_to_win(self):
+    def rows_to_win(self, player):
         for i in range(self.length):
             counter = 0
             for j in range(self.length):
                 mark = str(self.squares[i][j])
-                if mark == 'x':
+                if mark == player:
                     counter = counter + 1
-                elif mark == 'o':
-                    counter = counter - 1
-                else:
-                    pass
-            if counter == int(self.length * -1 + 1):
-                move_tuple = (i + 1, j + 1)
-                print(move_tuple)
-                self.move = Move.o_win
+                elif mark == '_':
+                    move_tuple = (i + 1, j + 1)
+            if counter == int(self.length - 1):
                 return move_tuple
 
-    def cols_to_win(self):
+    def cols_to_win(self, player):
         for i in range(self.length):
             counter = 0
             for j in range(self.length):
                 mark = str(self.squares[j][i])
-                if mark == 'x':
+                if mark == player:
                     counter = counter + 1
-                elif mark == 'o':
-                    counter = counter - 1
-                else:
-                    pass
-            if counter == int(self.length * -1 + 1):
-                move_tuple = (j + 1, i + 1)
-                print(move_tuple)
-                self.move = Move.o_win
+                elif mark == '_':
+                    move_tuple = (j + 1, i + 1)
+            if counter == int(self.length - 1):
                 return move_tuple
 
-    def diag_l_to_win(self):
+    def diag_l_to_win(self, player):
         counter = 0
         for i in range(self.length):
             mark = str(self.squares[i][i])
-            if mark == 'x':
+            if mark == player:
                 counter = counter + 1
-            elif mark == 'o':
-                counter = counter - 1
-            else:
-                pass
-            if counter == int(self.length * -1 + 1):
+            elif mark == '_':
                 move_tuple = (i + 1, i + 1)
-                print(move_tuple)
-                self.move = Move.o_win
-                return move_tuple
-
-    def diag_r_to_win(self):
-        counter = 0
-        for i in range(self.length):
-            mark = str(self.squares[i][i * -1 - 1])
-            if mark == 'x':
-                counter = counter + 1
-            elif mark == 'o':
-                counter = counter - 1
-            else:
-                pass
-        if counter == int(self.length * -1 + 1):
-            move_tuple = (i + 1, i + 1)
-            print(move_tuple)
-            self.move = Move.o_win
+        if counter == int(self.length - 1):
             return move_tuple
 
-    def rows_to_block(self):
-        for i in range(self.length):
-            counter = 0
-            for j in range(self.length):
-                mark = str(self.squares[i][j])
-                if mark == 'x':
-                    counter = counter + 1
-                elif mark == 'o':
-                    counter = counter - 1
-                else:
-                    pass
-            if counter == int(self.length-1):
-                for j in range(self.length):
-                    mark = str(self.squares[i][j])
-                    if mark == '_':
-                        move_tuple = (i + 1, j + 1)
-                        print(move_tuple)
-                        self.move = Move.o_win
-                        return move_tuple
-
-    def cols_to_block(self):
-        for i in range(self.length):
-            counter = 0
-            for j in range(self.length):
-                mark = str(self.squares[j][i])
-                if mark == 'x':
-                    counter = counter + 1
-                elif mark == 'o':
-                    counter = counter - 1
-                else:
-                    pass
-            if counter == int(self.length - 1):
-                for i in range(self.length):
-                    mark = str(self.squares[i][j])
-                    if mark == '_':
-                        move_tuple = (i + 1, j + 1)
-                        print(move_tuple)
-                        self.move = Move.o_win
-                        return move_tuple
-
-    def diag_l_to_block(self):
-        counter = 0
-        for i in range(self.length):
-            mark = str(self.squares[i][i])
-            if mark == 'x':
-                counter = counter + 1
-            elif mark == 'o':
-                counter = counter - 1
-            else:
-                pass
-            if counter == int(self.length-1):
-                for i in range(self.length):
-                    mark = str(self.squares[i][i])
-                    if mark == '_':
-                        move_tuple = (i + 1, i + 1)
-                        print(move_tuple)
-                        self.move = Move.o_win
-                        return move_tuple
-
-    def diag_r_to_block(self):
+    def diag_r_to_win(self, player):
         counter = 0
         for i in range(self.length):
             mark = str(self.squares[i][i * -1 - 1])
-            print(mark)
-            if mark == 'x':
+            if mark == player:
                 counter = counter + 1
-            elif mark == 'o':
-                counter = counter - 1
+            elif mark == '_':
+                move_tuple = (i + 1, self.length-i)
+        if counter == int(self.length - 1):
+            return move_tuple
+
+def enemy(board, player):
+    move = board.rows_to_win(player)
+    if move:
+        return move
+    else:
+        move = board.cols_to_win(player)
+        if move:
+            return move
+        else:
+            move = board.diag_l_to_win(player)
+            if move:
+                return move
             else:
-                pass
-        if counter == int(self.length-1):
-            for i in range(self.length):
-                mark = str(self.squares[i][i * -1 - 1])
-                print(mark)
-                if mark == '_':
-                    move_tuple = (i+1,i*-1+3)
-                    print(move_tuple)
-                    self.move = Move.o_win
-                    return move_tuple
-
-                    #move_tuple = (i, i)
-                    #print(move_tuple)
-                    #self.move = Move.o_win
-                    #return move_tuple
-
-    def try_win(self):
-        self.rows_to_win()
-        self.cols_to_win()
-        self.diag_l_to_win()
-        self.diag_r_to_win()
-
-    def try_block(self):
-        self.rows_to_block()
-        self.cols_to_block()
-        self.diag_l_to_block()
-        self.diag_r_to_block()
-
-def enemy(board):
-    board.try_win()
-    board.try_block()
-
-
-
+                move = board.diag_r_to_win(player)
+                return move
 
 
 new_board = Board(3)
@@ -230,4 +121,5 @@ print("Congratulations! You created " + str(3) + "-sided board, which has " + st
 print("See your board below:")
 new_board.printme()
 
-mytuple = enemy(new_board)
+my_move = enemy(new_board,'x')
+print(my_move)
