@@ -7,10 +7,12 @@ class Result(Enum):
     not_finished = 3
     draw = 4
 
+
 class Move(Enum):
     x_win = 1
     o_win = 2
     not_last = 3
+
 
 class Square:
     def __init__(self, num, col, row):
@@ -35,8 +37,7 @@ class Square:
 class Board:
     def __init__(self, side):
         self.length = side
-        self.squares = [['_','_','_'], ['_','x','_'], ['x','_','_']]
-
+        self.squares = [['_', 'x', '_'], ['_', 'x', '_'], ['x', '_', '_']]
 
     def printme(self):
         rowcount = 0
@@ -51,8 +52,6 @@ class Board:
             columns = columns+str(i)+", "
         print(columns)
 
-
-##here new methods
     def rows_to_win(self, player):
         for i in range(self.length):
             counter = 0
@@ -99,7 +98,8 @@ class Board:
         if counter == int(self.length - 1):
             return move_tuple
 
-def enemy(board, player):
+
+def last_move(board, player):
     move = board.rows_to_win(player)
     if move:
         return move
@@ -115,11 +115,26 @@ def enemy(board, player):
                 move = board.diag_r_to_win(player)
                 return move
 
+def enemy(board, player):
+    win_move = last_move(board, player)
+    print(win_move)
+    if win_move:
+        return win_move
+    else:
+        if player == 'x':
+            player = 'o'
+        else:
+            player = 'x'
+        win_move = last_move(board, player)
+        if win_move:
+            return win_move
+
+
 
 new_board = Board(3)
 print("Congratulations! You created " + str(3) + "-sided board, which has " + str(9) + " squares.")
 print("See your board below:")
 new_board.printme()
 
-my_move = enemy(new_board,'x')
+my_move = enemy(new_board, 'o')
 print(my_move)
