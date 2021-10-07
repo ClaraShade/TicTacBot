@@ -37,7 +37,7 @@ class Square:
 class Board:
     def __init__(self, side):
         self.length = side
-        self.squares = [['_', 'x', '_'], ['_', 'x', 'x'], ['x', '_', '_']]
+        self.squares = [['_', 'x', 'o'], ['_', '_', '_'], ['_', 'o', 'x']]
 
     def printme(self):
         rowcount = 0
@@ -61,11 +61,8 @@ class Board:
                     counter = counter + 1
                 elif mark == '_':
                     move_tuple = (i + 1, j + 1)
-            print(counter)
             if counter == target:
-                print(move_tuple)
                 return move_tuple
-
 
     def count_cols(self, player, target):
         for i in range(self.length):
@@ -76,9 +73,7 @@ class Board:
                     counter = counter + 1
                 elif mark == '_':
                     move_tuple = (j + 1, i + 1)
-            print(counter)
             if counter == target:
-                print(move_tuple)
                 return move_tuple
 
     def count_diag_l(self, player, target):
@@ -89,9 +84,7 @@ class Board:
                 counter = counter + 1
             elif mark == '_':
                 move_tuple = (i + 1, i + 1)
-        print(counter)
         if counter == target:
-            print(move_tuple)
             return move_tuple
 
     def count_diag_r(self, player, target):
@@ -102,32 +95,57 @@ class Board:
                 counter = counter + 1
             elif mark == '_':
                 move_tuple = (i + 1, self.length-i)
-        print(counter)
         if counter == target:
-            print(move_tuple)
             return move_tuple
 
 
+def evaluate_move(board, player, target):
+    move = board.count_rows(player, target)
+    if move:
+        return move
+    else:
+        move = board.count_cols(player, target)
+        if move:
+            return move
+        else:
+            move = board.count_diag_l(player, target)
+            if move:
+                return move
+            else:
+                move = board.count_diag_r(player, target)
+                if move:
+                    return move
 
-def count_sth(board, player, target):
-    board.count_rows(player, target)
-    board.count_cols(player, target)
-    board.count_diag_l(player, target)
-    board.count_diag_r(player, target)
+def change(player):
+    if player == 'x':
+        player = 'o'
+    else:
+        player = 'x'
+    return(player)
+
+def enemy(board, player):
+    winning_move = evaluate_move(board, player, board.length - 1)
+    if winning_move:
+        print('Win!')
+        print(winning_move)
+        return winning_move
+    else:
+        player = change(player)
+        blocking_move = evaluate_move(board, player, board.length - 1)
+        if blocking_move:
+            print('Block!')
+            print(blocking_move)
+            return blocking_move
+        else:
+            player = change(player)
+            for i in range(board.length - 2):
+                free_move = evaluate_move(board, player, i)
+                if free_move:
+                    print('Free move!')
+                    print(free_move)
+                    return free_move
 
 
-
-
-
-#    win_move = last_move(board, player)
-#    print(win_move)
-#    if win_move:
-#        return win_move
-#    else:
-#        if player == 'x':
-#            player = 'o'
-#        else:
-#            player = 'x'
 #        win_move = last_move(board, player)
 #        if win_move:
 #            return win_move
@@ -141,6 +159,4 @@ print("Congratulations! You created " + str(3) + "-sided board, which has " + st
 print("See your board below:")
 new_board.printme()
 
-test_number = count_sth(new_board, 'x', 3)
-if test_number == 3:
-    print('yesss!')
+enemy(new_board, 'x')
