@@ -37,7 +37,7 @@ class Square:
 class Board:
     def __init__(self, side):
         self.length = side
-        self.squares = [['_', 'x', '_'], ['_', 'x', '_'], ['x', '_', '_']]
+        self.squares = [['_', 'x', '_'], ['_', 'x', 'x'], ['x', '_', '_']]
 
     def printme(self):
         rowcount = 0
@@ -52,7 +52,7 @@ class Board:
             columns = columns+str(i)+", "
         print(columns)
 
-    def rows_to_win(self, player):
+    def count_rows(self, player, target):
         for i in range(self.length):
             counter = 0
             for j in range(self.length):
@@ -61,10 +61,13 @@ class Board:
                     counter = counter + 1
                 elif mark == '_':
                     move_tuple = (i + 1, j + 1)
-            if counter == int(self.length - 1):
+            print(counter)
+            if counter == target:
+                print(move_tuple)
                 return move_tuple
 
-    def cols_to_win(self, player):
+
+    def count_cols(self, player, target):
         for i in range(self.length):
             counter = 0
             for j in range(self.length):
@@ -73,10 +76,12 @@ class Board:
                     counter = counter + 1
                 elif mark == '_':
                     move_tuple = (j + 1, i + 1)
-            if counter == int(self.length - 1):
+            print(counter)
+            if counter == target:
+                print(move_tuple)
                 return move_tuple
 
-    def diag_l_to_win(self, player):
+    def count_diag_l(self, player, target):
         counter = 0
         for i in range(self.length):
             mark = str(self.squares[i][i])
@@ -84,10 +89,12 @@ class Board:
                 counter = counter + 1
             elif mark == '_':
                 move_tuple = (i + 1, i + 1)
-        if counter == int(self.length - 1):
+        print(counter)
+        if counter == target:
+            print(move_tuple)
             return move_tuple
 
-    def diag_r_to_win(self, player):
+    def count_diag_r(self, player, target):
         counter = 0
         for i in range(self.length):
             mark = str(self.squares[i][i * -1 - 1])
@@ -95,46 +102,45 @@ class Board:
                 counter = counter + 1
             elif mark == '_':
                 move_tuple = (i + 1, self.length-i)
-        if counter == int(self.length - 1):
+        print(counter)
+        if counter == target:
+            print(move_tuple)
             return move_tuple
 
 
-def last_move(board, player):
-    move = board.rows_to_win(player)
-    if move:
-        return move
-    else:
-        move = board.cols_to_win(player)
-        if move:
-            return move
-        else:
-            move = board.diag_l_to_win(player)
-            if move:
-                return move
-            else:
-                move = board.diag_r_to_win(player)
-                return move
 
-def enemy(board, player):
-    win_move = last_move(board, player)
-    print(win_move)
-    if win_move:
-        return win_move
-    else:
-        if player == 'x':
-            player = 'o'
-        else:
-            player = 'x'
-        win_move = last_move(board, player)
-        if win_move:
-            return win_move
+def count_sth(board, player, target):
+    board.count_rows(player, target)
+    board.count_cols(player, target)
+    board.count_diag_l(player, target)
+    board.count_diag_r(player, target)
 
 
+
+
+
+#    win_move = last_move(board, player)
+#    print(win_move)
+#    if win_move:
+#        return win_move
+#    else:
+#        if player == 'x':
+#            player = 'o'
+#        else:
+#            player = 'x'
+#        win_move = last_move(board, player)
+#        if win_move:
+#            return win_move
+#        else:
+#            if board.squares[1][1] == '_':
+#                win_move = (2,2)
+#                return win_move
 
 new_board = Board(3)
 print("Congratulations! You created " + str(3) + "-sided board, which has " + str(9) + " squares.")
 print("See your board below:")
 new_board.printme()
 
-my_move = enemy(new_board, 'o')
-print(my_move)
+test_number = count_sth(new_board, 'x', 3)
+if test_number == 3:
+    print('yesss!')
