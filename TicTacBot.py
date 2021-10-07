@@ -146,14 +146,6 @@ def enemy(board, player):
                     return free_move
 
 
-#        win_move = last_move(board, player)
-#        if win_move:
-#            return win_move
-#        else:
-#            if board.squares[1][1] == '_':
-#                win_move = (2,2)
-#                return win_move
-
 new_board = Board(3)
 print("Congratulations! You created " + str(3) + "-sided board, which has " + str(9) + " squares.")
 print("See your board below:")
