@@ -37,7 +37,7 @@ class Square:
 class Board:
     def __init__(self, side):
         self.length = side
-        self.squares = [['_', 'x', 'o'], ['_', '_', '_'], ['_', 'o', 'x']]
+        self.squares = [['_', '_', 'o'], ['_', '_', '_'], ['_', '_', '_']]
 
     def printme(self):
         rowcount = 0
@@ -51,10 +51,17 @@ class Board:
         for i in range(1, self.length+1):
             columns = columns+str(i)+", "
         print(columns)
+'''
+count_rows, count_cols, count_diagl, coun_t_diag_r: similar methods that return the first possible move
+target - number of marks needed to find
+move tuple - coordinates to use
+'''
+
 
     def count_rows(self, player, target):
         for i in range(self.length):
             counter = 0
+            move_tuple = None
             for j in range(self.length):
                 mark = str(self.squares[i][j])
                 if mark == player:
@@ -67,6 +74,7 @@ class Board:
     def count_cols(self, player, target):
         for i in range(self.length):
             counter = 0
+            move_tuple = None
             for j in range(self.length):
                 mark = str(self.squares[j][i])
                 if mark == player:
@@ -80,6 +88,7 @@ class Board:
         counter = 0
         for i in range(self.length):
             mark = str(self.squares[i][i])
+            move_tuple = None
             if mark == player:
                 counter = counter + 1
             elif mark == '_':
@@ -91,6 +100,7 @@ class Board:
         counter = 0
         for i in range(self.length):
             mark = str(self.squares[i][i * -1 - 1])
+            move_tuple = None
             if mark == player:
                 counter = counter + 1
             elif mark == '_':
@@ -101,7 +111,7 @@ class Board:
 
 def evaluate_move(board, player, target):
     move = board.count_rows(player, target)
-    if move:
+    if move: #sprawdzić czy da się 'if not move'
         return move
     else:
         move = board.count_cols(player, target)
@@ -121,7 +131,7 @@ def change(player):
         player = 'o'
     else:
         player = 'x'
-    return(player)
+    return player
 
 def enemy(board, player):
     winning_move = evaluate_move(board, player, board.length - 1)
@@ -138,12 +148,19 @@ def enemy(board, player):
             return blocking_move
         else:
             player = change(player)
-            for i in range(board.length - 2):
-                free_move = evaluate_move(board, player, i)
-                if free_move:
-                    print('Free move!')
-                    print(free_move)
-                    return free_move
+            for i in range(board.length-2,0,-1):
+                add_mark = evaluate_move(board, player, i)
+                if add_mark:
+                    print('Add mark!')
+                    print(add_mark)
+                    return add_mark
+                else:
+                    player = change(player)
+                    start_line = evaluate_move(board, player, 0)
+                    if start_line:
+                        print('Start a new line!')
+                        print(start_line)
+                        return(start_line)
 
 
 new_board = Board(3)
