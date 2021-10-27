@@ -37,7 +37,7 @@ class Square:
 class Board:
     def __init__(self, side):
         self.length = side
-        self.squares = [['_', '_', 'o'], ['_', 'x', '_'], ['x', 'o', '_']]
+        self.squares = [['x', '_', 'o'], ['_', '_', '_'], ['_', '_', '_']]
         self.score = [[0,0,0],[0,0,0],[0,0,0]]
 
     def printme(self):
@@ -60,11 +60,13 @@ class Board:
                 mark = str(self.squares[i][j])
                 if mark == player:
                     counter = counter + 1
-            if counter != 0:
-                for j in range(self.length):
-                    mark = str(self.squares[i][j])
-                    if mark == '_':
-                        self.score[i][j] = self.score[i][j] -5
+            for j in range(self.length):
+                mark = str(self.squares[i][j])
+                if mark == '_':
+                    if counter == 0:
+                        self.score[i][j] = self.score[i][j] +5
+                    else:
+                        self.score[i][j] = self.score[i][j] - 5
         print(self.score)
 
     def eval_cols(self, player):
@@ -74,10 +76,12 @@ class Board:
                 mark = str(self.squares[j][i])
                 if mark == player:
                     counter = counter + 1
-            if counter != 0:
-                for j in range(self.length):
-                    mark = str(self.squares[j][i])
-                    if mark == '_':
+            for j in range(self.length):
+                mark = str(self.squares[j][i])
+                if mark == '_':
+                    if counter == 0:
+                        self.score[j][i] = self.score[j][i] + 5
+                    else:
                         self.score[j][i] = self.score[j][i] - 5
         print(self.score)
 
@@ -87,10 +91,12 @@ class Board:
             mark = str(self.squares[i][i])
             if mark == player:
                 counter = counter + 1
-        if counter != 0:
-            for i in range(self.length):
-                mark = str(self.squares[i][i])
-                if mark == '_':
+        for i in range(self.length):
+            mark = str(self.squares[i][i])
+            if mark == '_':
+                if counter == 0:
+                    self.score[i][i] = self.score[i][i] + 5
+                else:
                     self.score[i][i] = self.score[i][i] - 5
         print(self.score)
 
@@ -100,22 +106,22 @@ class Board:
             mark = str(self.squares[i][i * -1 - 1])
             if mark == player:
                 counter = counter + 1
-        if counter != 0:
-            for i in range(self.length):
-                mark = str(self.squares[i][i * -1 - 1])
-                if mark == '_':
+        for i in range(self.length):
+            mark = str(self.squares[i][i * -1 - 1])
+            if mark == '_':
+                if counter == 0:
+                    self.score[i][i * -1 - 1] = self.score[i][i * -1 - 1] + 5
+                else:
                     self.score[i][i * -1 - 1] = self.score[i][i * -1 - 1] - 5
         print(self.score)
 
 
-#def evaluate_move(board, player, target):
-    #if not move: #sprawdzić czy da się 'if not move'
-    #    move = board.count_cols(player, target)
-    #    if not move:
-    #        move = board.count_diag_l(player, target)
-    #        if not move:
-    #            move = board.count_diag_r(player, target)
-    #return move
+def evaluate_move(board, player):
+    board.eval_rows(player)
+    board.eval_cols(player)
+    board.eval_diag_l(player)
+    board.eval_diag_r(player)
+    print(board.score)
 
 def change(player):
     if player == 'x':
@@ -130,7 +136,5 @@ print("See your board below:")
 new_board.printme()
 
 score_list = []
-new_board.eval_rows('x')
-new_board.eval_cols('x')
-new_board.eval_diag_l('x')
-new_board.eval_diag_r('x')
+
+evaluate_move(new_board,'x')
