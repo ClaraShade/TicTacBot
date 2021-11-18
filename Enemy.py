@@ -17,12 +17,15 @@ class Square:
         self.is_empty = False
         self.char = 'o'
 
+#class GameScore:
+#    def __init__(self)
 
 class Board:
     def __init__(self, side):
         self.length = side
-        self.squares = [['x', '_', 'x'], ['o', '_', 'o'], ['x', '_', 'x']]
-        self.score = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+        self.squares = [['_', '_', 'o'], ['_', 'o', '_'], ['_', '_', '_']]
+#        self.score = GameScore()
+        self.score = [[0, 0, 0], [0, 0, 0] , [0, 0, 0]]
 
     def printme(self):
         rowcount = 0
@@ -44,11 +47,11 @@ class Board:
             for j in range(self.length):
                 mark = str(self.squares[i][j])
                 if mark == player:
-                    count_enemies = count_enemies + 1
+                    count_friends = count_friends + 1
                 elif mark == '_':
                     pass
                 else:
-                    count_friends = count_friends + 1
+                    count_enemies = count_enemies + 1
             for j in range(self.length):
                 mark = str(self.squares[i][j])
                 if mark == '_':
@@ -61,7 +64,6 @@ class Board:
                     else:
                         self.score[i][j] = self.score[i][j] - 5
 
-        print(self.score)
 
     def eval_cols(self, player):
         for i in range(self.length):
@@ -70,11 +72,11 @@ class Board:
             for j in range(self.length):
                 mark = str(self.squares[j][i])
                 if mark == player:
-                    count_enemies = count_enemies + 1
+                    count_friends = count_friends + 1
                 elif mark == '_':
                     pass
                 else:
-                    count_friends = count_friends + 1
+                    count_enemies = count_enemies + 1
             for j in range(self.length):
                 mark = str(self.squares[j][i])
                 if mark == '_':
@@ -88,19 +90,17 @@ class Board:
                     else:
                         self.score[j][i] = self.score[j][i] - 5
 
-        print(self.score)
-
     def eval_diag_l(self, player):
         count_enemies = 0
         count_friends = 0
         for i in range(self.length):
             mark = str(self.squares[i][i])
             if mark == player:
-                count_enemies = count_enemies + 1
+                count_friends = count_friends + 1
             elif mark == '_':
                 pass
             else:
-                count_friends = count_friends + 1
+                count_enemies = count_enemies + 1
         for i in range(self.length):
             mark = str(self.squares[i][i])
             if mark == '_':
@@ -113,7 +113,6 @@ class Board:
                     self.score[i][i] = self.score[i][i] + 500
                 else:
                     self.score[i][i] = self.score[i][i] - 5
-        print(self.score)
 
     def eval_diag_r(self, player):
         count_enemies = 0
@@ -121,11 +120,11 @@ class Board:
         for i in range(self.length):
             mark = str(self.squares[i][i * -1 - 1])
             if mark == player:
-                count_enemies = count_enemies + 1
+                count_friends = count_friends + 1
             elif mark == '_':
                 pass
             else:
-                count_friends = count_friends + 1
+                count_enemies = count_enemies + 1
         for i in range(self.length):
             mark = str(self.squares[i][i * -1 - 1])
             if mark == '_':
@@ -138,7 +137,6 @@ class Board:
                     self.score[i][i * -1 - 1] = self.score[i][i * -1 - 1] + 500
                 else:
                     self.score[i][i * -1 - 1] = self.score[i][i * -1 - 1] - 5
-        print(self.score)
 
 
 def evaluate_move(board, player):
@@ -148,6 +146,17 @@ def evaluate_move(board, player):
     board.eval_diag_r(player)
     print(board.score)
 
+def show_move(board):
+    moves = {}
+    for i in range(board.length):
+        for j in range(board.length):
+            movetuple = (i + 1, j + 1)
+            print(movetuple)
+            moves[(i + 1, j + 1)] = board.score[i][j]
+
+    print(moves)
+    # print(max(list))
+
 
 new_board = Board(3)
 print("Congratulations! You created " + str(3) + "-sided board, which has " + str(9) + " squares.")
@@ -155,4 +164,6 @@ print("See your board below:")
 new_board.printme()
 
 
-evaluate_move(new_board, 'o')
+evaluate_move(new_board, 'x')
+
+show_move(new_board)
