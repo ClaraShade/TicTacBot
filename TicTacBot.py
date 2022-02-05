@@ -37,7 +37,7 @@ class Square:
 class Board:
     def __init__(self, side):
         self.length = side
-        self.squares = [['_', '_', 'o'], ['_', '_', '_'], ['_', '_', '_']]
+        self.squares = [['_', '_', '_'], ['_', '_', '_'], ['_', '_', '_']]
 
     def printme(self):
         rowcount = 0

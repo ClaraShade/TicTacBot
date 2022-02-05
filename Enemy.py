@@ -21,7 +21,7 @@ class GameScore:
     def __init__(self, length):
         self.length = length
         self.score = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
-        self.squares = [['_', '_', 'o'], ['_', 'o', '_'], ['_', '_', '_']]
+        self.squares = [['_', '_', '_'], ['_', '_', '_'], ['_', '_', '_']]
 
     def eval_rows(self, player):
         for i in range(self.length):
@@ -175,7 +175,7 @@ print("Congratulations! You created " + str(3) + "-sided board, which has " + st
 print("See your board below:")
 new_board.printme()
 
-new_board.evaluate_move('x')
+new_board.evaluate_move('o')
 
 print(new_board.score.score)
 
