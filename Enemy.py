@@ -17,6 +17,7 @@ class Square:
         self.is_empty = False
         self.char = 'o'
 
+
 class GameScore:
     def __init__(self, length):
         self.length = length
@@ -46,7 +47,7 @@ class GameScore:
                         self.score[i][j] = self.score[i][j] + 500
                     else:
                         self.score[i][j] = self.score[i][j] - 5
-
+        return self.score
 
     def eval_cols(self, player):
         for i in range(self.length):
@@ -126,7 +127,7 @@ class GameScore:
         self.eval_cols(player)
         self.eval_diag_l(player)
         self.eval_diag_r(player)
-        print(self.score)
+        return self.score
 
 
 class Board:
@@ -135,7 +136,6 @@ class Board:
         self.squares = [['_', '_', 'o'], ['_', 'o', '_'], ['_', '_', '_']]
         game_score = GameScore(side)
         self.score = game_score
-
 
     def evaluate_move(self, player):
         return self.score.evaluate_move(player)
@@ -154,8 +154,6 @@ class Board:
         print(columns)
 
 
-
-
 def show_move(board):
     moves = {}
     for i in range(board.length):
@@ -169,15 +167,18 @@ def show_move(board):
     print(best_move)
 
 
+def main():
+    new_board = Board(3)
+    print("Congratulations! You created " + str(3) + "-sided board, which has " + str(9) + " squares.")
+    print("See your board below:")
+    new_board.printme()
 
-new_board = Board(3)
-print("Congratulations! You created " + str(3) + "-sided board, which has " + str(9) + " squares.")
-print("See your board below:")
-new_board.printme()
+    new_board.evaluate_move('o')
 
-new_board.evaluate_move('o')
+    print(new_board.score.score)
 
-print(new_board.score.score)
+    show_move(new_board)
 
-show_move(new_board)
 
+if __name__ == "__main__":
+    main()
